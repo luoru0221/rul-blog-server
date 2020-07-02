@@ -1,7 +1,7 @@
 spring:
   #数据源配置
   datasource:
-    url: jdbc:mysql://localhost:3306/rul_blog?serverTimezone=UTC
+    url: jdbc:mysql://47.106.252.131:3306/rul_blog?serverTimezone=UTC
     username: root
     password: "03290221"
     type: com.alibaba.druid.pool.DruidDataSource
@@ -13,12 +13,23 @@ spring:
 
   #redis配置
   redis:
-    host: localhost
+    host: 47.106.252.131
     port: 6379
-    timeout: 2000
+    timeout: 4000
+
+  #mail配置
+  mail:
+    username: luoru0221@qq.com
+    password: vbviwagpiloqcahf
+    host: smtp.qq.com
 
 
 #mybatis配置
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.rul.blog.pojo
+
+#mail自定义配置
+mail:
+  from:
+    addr: luoru0221@qq.com

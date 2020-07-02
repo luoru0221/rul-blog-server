@@ -8,6 +8,16 @@ public interface ArticleService {
 
     List<Article> getAllArticle();
 
+    List<Article> getArticleByAuthor(Integer userId);
+
+    List<Article> getArticleByTag(Integer tagId);
+
     Article getArticleById(Integer articleId);
+
+    Article addNewArticle(Article article);
+
+    boolean editorArticle(Article article);
+
+    boolean deleteArticle(Integer articleId);
 
 }

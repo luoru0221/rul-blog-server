@@ -9,6 +9,7 @@
         <result property="userName" column="user_name"/>
         <result property="userEmail" column="user_email"/>
         <result property="userPassword" column="user_password"/>
+        <result property="userRole" column="user_role"/>
     </resultMap>
 
     <select id="findUserById" resultMap="User">

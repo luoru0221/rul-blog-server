@@ -1,0 +1,7 @@
+com\rul\blog\util\RedisUtilTest.class
+com\rul\blog\mapper\ArticleMapperTest.class
+com\rul\blog\RulBlogServerApplicationTests.class
+com\rul\blog\mapper\UserMapperTest.class
+com\rul\blog\util\EmailUtilTest.class
+com\rul\blog\service\ArticleServerTest.class
+com\rul\blog\mapper\TagMapperTest.class

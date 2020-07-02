@@ -6,6 +6,18 @@ public class Tag implements Serializable {
     private Integer tagId;
     private String tagName;
 
+    public Tag() {
+    }
+
+    public Tag(String tagName) {
+        this.tagName = tagName;
+    }
+
+    public Tag(Integer tagId, String tagName) {
+        this.tagId = tagId;
+        this.tagName = tagName;
+    }
+
     public Integer getTagId() {
         return tagId;
     }

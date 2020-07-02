@@ -1,0 +1,7 @@
+D:\MyProject\rul-blog-server\src\test\java\com\rul\blog\RulBlogServerApplicationTests.java
+D:\MyProject\rul-blog-server\src\test\java\com\rul\blog\mapper\TagMapperTest.java
+D:\MyProject\rul-blog-server\src\test\java\com\rul\blog\mapper\ArticleMapperTest.java
+D:\MyProject\rul-blog-server\src\test\java\com\rul\blog\mapper\UserMapperTest.java
+D:\MyProject\rul-blog-server\src\test\java\com\rul\blog\util\RedisUtilTest.java
+D:\MyProject\rul-blog-server\src\test\java\com\rul\blog\util\EmailUtilTest.java
+D:\MyProject\rul-blog-server\src\test\java\com\rul\blog\service\ArticleServerTest.java

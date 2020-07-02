@@ -16,7 +16,7 @@
             <result property="tagName" column="tag_name"/>
         </collection>
     </resultMap>
-    
+
     <select id="findAllArticle" resultMap="Article">
         SELECT article.article_id,article_title,article_time,user_name,
             tag.tag_id,tag.tag_name
@@ -25,6 +25,12 @@
         LEFT JOIN tag ON arta.tag_id = tag.tag_id
         LEFT JOIN users ON article.article_user_id = users.user_id
         ORDER BY article_time;
+    </select>
+
+    <select id="findArticleByAuthor" resultMap="Article">
+        SELECT article_id,article_title,article_time
+        FROM article
+        WHERE article_user_id = #{authorId};
     </select>
 
     <select id="findArticleById" resultMap="Article">
@@ -36,5 +42,40 @@
         LEFT JOIN users ON article.article_user_id = users.user_id
         WHERE article.article_id = #{articleId};
     </select>
+
+    <select id="findArticleByTagId" resultMap="Article">
+        SELECT article.article_id,article_title,article_time,user_name,tag.tag_id,tag.tag_name
+        FROM article,article_tag,tag,users
+        WHERE article.article_id IN (
+            SELECT article_id FROM article_tag WHERE tag_id = #{tagId}
+        )
+	    AND article.article_id = article_tag.article_id
+	    AND article_tag.tag_id = tag.tag_id
+	    AND article.article_user_id = users.user_id
+        ORDER BY article_time;
+    </select>
+
+    <insert id="addArticle" useGeneratedKeys="true" keyProperty="articleId"
+            parameterType="com.rul.blog.pojo.Article">
+        INSERT INTO article (article_title,article_user_id,article_content)
+        VALUES (#{articleTitle},#{articleAuthor},#{articleContent});
+    </insert>
+
+    <select id="findAuthorIdByArticleId" resultType="java.lang.Integer">
+        SELECT article_user_id FROM article
+        WHERE article_id = #{articleId};
+    </select>
+
+    <update id="updateTitleAndContent">
+        UPDATE article
+        SET article_title = #{articleTitle},
+        article_content = #{articleContent}
+        WHERE article_id = #{articleId};
+    </update>
+
+    <delete id="deleteArticleById">
+        DELETE FROM article
+        WHERE article_id = #{articleId};
+    </delete>
 
 </mapper>

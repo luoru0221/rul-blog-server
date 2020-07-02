@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rul.blog.mapper.TagMapper">
+    <!--结果集映射-->
+    <resultMap id="Tag" type="com.rul.blog.pojo.Tag">
+        <id property="tagId" column="tag_id"/>
+        <result property="tagName" column="tag_name"/>
+    </resultMap>
+
+    <select id="findTagsByName" parameterType="java.util.List" resultMap="Tag">
+        SELECT tag_id,tag_name
+        FROM tag
+        WHERE tag_name IN
+        <foreach collection="list" item="tag" open="(" close=")" separator=",">
+            #{tag.tagName}
+        </foreach>
+    </select>
+
+    <insert id="addTagsByName" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="tagId">
+        INSERT INTO tag (tag_name)
+        VALUES
+        <foreach collection="list" item="tag" separator=",">
+            (#{tag.tagName})
+        </foreach>
+    </insert>
+
+    <insert id="addArticleTags">
+        INSERT IGNORE INTO article_tag (article_id,tag_id)
+        VALUES
+        <foreach collection="tags" item="tag" separator=",">
+            (#{articleId},#{tag.tagId})
+        </foreach>
+    </insert>
+
+    <delete id="deleteArticleTags">
+        DELETE FROM article_tag
+        WHERE article_id = #{articleId}
+        AND tag_id NOT IN
+        <foreach collection="tags" item="tag" open="(" close=")" separator=",">
+            #{tag.tagId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteArticleAllTags">
+        DELETE FROM article_tag
+        WHERE article_id = #{articleId};
+    </delete>
+
+</mapper>
