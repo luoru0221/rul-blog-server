@@ -34,7 +34,7 @@ public class ArticleController {
     }
 
     @RequestMapping("/getArticleByTag")
-    public List<Article> getArticleByTag(Integer tagId){
+    public List<Article> getArticleByTag(Integer tagId) {
         return articleService.getArticleByTag(tagId);
     }
 
@@ -49,7 +49,23 @@ public class ArticleController {
     }
 
     @RequestMapping("/deleteArticle")
-    public Boolean deleteArticle(Integer articleId){
+    public Boolean deleteArticle(Integer articleId) {
         return articleService.deleteArticle(articleId);
+    }
+
+    @RequestMapping("/recoverArticle")
+    public Article recoverArticle(Integer articleId) {
+        return articleService.recoverArticle(articleId);
+    }
+
+    @RequestMapping("/deleteBackup")
+    public Boolean deleteBackup(Integer userId, Integer articleId) {
+        articleService.deleteBackup(userId, articleId);
+        return true;
+    }
+
+    @RequestMapping("/getBackup")
+    public List<Article> getBackup(Integer userId) {
+        return articleService.getBackup(userId);
     }
 }

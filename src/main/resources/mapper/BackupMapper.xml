@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rul.blog.mapper.BackupMapper">
+    <!--结果集映射关系-->
+    <resultMap id="Article" type="com.rul.blog.pojo.Article">
+        <id property="articleId" column="article_id"/>
+        <result property="articleTitle" column="article_title"/>
+        <result property="articleAuthor" column="user_id"/>
+        <collection property="tags" ofType="com.rul.blog.pojo.Tag">
+            <id property="tagId" column="tag_id"/>
+            <result property="tagName" column="tag_name"/>
+        </collection>
+    </resultMap>
+
+    <insert id="addBackup">
+        INSERT INTO backup (article_id,user_id,article_title)
+        VALUES (#{article.articleId},#{userId},#{article.articleTitle})
+    </insert>
+
+    <select id="findBackup" resultMap="Article">
+        SELECT backup.article_id,article_title,user_id,tag.tag_id,tag.tag_name
+        FROM backup
+        LEFT JOIN article_tag ON backup.article_id = article_tag.article_id
+        LEFT JOIN tag ON article_tag.tag_id = tag.tag_id
+        WHERE backup.article_id = #{articleId};
+    </select>
+
+    <delete id="delBackup">
+        DELETE FROM backup
+        WHERE article_id = #{articleId};
+    </delete>
+
+    <select id="findBackupByUserId" resultMap="Article">
+        SELECT backup.article_id,article_title,user_id,tag.tag_id,tag_name
+        FROM backup
+        LEFT JOIN article_tag ON backup.article_id = article_tag.article_id
+        LEFT JOIN tag ON article_tag.tag_id = tag.tag_id
+        WHERE backup.user_id = #{userId};
+    </select>
+</mapper>

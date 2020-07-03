@@ -1,14 +1,17 @@
 package com.rul.blog.service.impl;
 
 import com.rul.blog.mapper.ArticleMapper;
+import com.rul.blog.mapper.BackupMapper;
 import com.rul.blog.mapper.TagMapper;
 import com.rul.blog.pojo.Article;
 import com.rul.blog.pojo.Tag;
 import com.rul.blog.service.ArticleService;
+import com.rul.blog.util.FileIOUtil;
 import com.rul.blog.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 
 
@@ -21,6 +24,10 @@ public class ArticleServiceImpl implements ArticleService {
     private TagMapper tagMapper;
     @Autowired
     private RedisUtil redisUtil;
+    @Autowired
+    private FileIOUtil fileIOUtil;
+    @Autowired
+    private BackupMapper backupMapper;
 
     @Override
     public List<Article> getAllArticle() {
@@ -83,11 +90,51 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public boolean deleteArticle(Integer articleId) {
-        //删除文章
-        Integer rows = articleMapper.deleteArticleById(articleId);
-        //删除标签
-        tagMapper.deleteArticleAllTags(articleId);
+        //将要删除的文章和作者
+        Article article = articleMapper.findArticleById(articleId);
+        Integer userId = articleMapper.findAuthorIdByArticleId(articleId);
+
+        int rows = 0;
+        try {
+            //删除文章
+            rows = articleMapper.deleteArticleById(articleId);
+            //文章备份
+            fileIOUtil.output(userId, articleId, article.getArticleContent());
+            backupMapper.addBackup(article, userId);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return rows > 0;
+    }
+
+    @Override
+    public Article recoverArticle(Integer articleId) {
+        //查询备份信息
+        Article article = backupMapper.findBackup(articleId);
+        tagMapper.deleteArticleAllTags(articleId);
+        Integer userId = Integer.parseInt(article.getArticleAuthor());
+        try {
+            //读取备份文件内容
+            String articleContent = fileIOUtil.input(userId, articleId);
+            article.setArticleContent(articleContent);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //删除备份
+        deleteBackup(userId,articleId);
+        return addNewArticle(article);
+    }
+
+    @Override
+    public void deleteBackup(Integer userId, Integer articleId){
+        backupMapper.delBackup(articleId);
+        fileIOUtil.delete(userId, articleId);
+    }
+
+    @Override
+    public List<Article> getBackup(Integer userId) {
+        return backupMapper.findBackupByUserId(userId);
     }
 
     public void addNewTags(Article article) {

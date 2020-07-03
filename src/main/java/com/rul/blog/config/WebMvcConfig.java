@@ -9,6 +9,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/files/**").addResourceLocations("file:/files/");
+        registry.addResourceHandler("/backup/**").addResourceLocations("file:/backup/");
     }
 }
 

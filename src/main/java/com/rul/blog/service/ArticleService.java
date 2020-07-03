@@ -20,4 +20,10 @@ public interface ArticleService {
 
     boolean deleteArticle(Integer articleId);
 
+    Article recoverArticle(Integer articleId);
+
+    void deleteBackup(Integer userId, Integer articleId);
+
+    List<Article> getBackup(Integer userId);
+
 }
