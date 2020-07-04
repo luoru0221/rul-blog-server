@@ -10,8 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.annotation.Resource;
-
+/**
+ * 用户业务层实现类
+ *
+ * @author RuL
+ * @time 2020-06-30
+ */
 @Service
 public class UserServiceImpl implements UserService {
 

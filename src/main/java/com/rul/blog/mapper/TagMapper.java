@@ -5,6 +5,12 @@ import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
+/**
+ * Tag持久层接口
+ *
+ * @author RuL
+ * @time 2020-06-29
+ */
 @Mapper
 public interface TagMapper {
 

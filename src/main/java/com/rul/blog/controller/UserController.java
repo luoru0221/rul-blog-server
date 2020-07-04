@@ -12,6 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
+/**
+ * 用户服务接口层
+ *
+ * @author RuL
+ * @time 2020-06-27
+ */
 @CrossOrigin
 @RestController
 @RequestMapping("/user")
@@ -44,7 +50,7 @@ public class UserController {
     @RequestMapping("/register")
     public boolean register(@RequestBody Map<String, Object> params) {
         String userJson = JSONObject.toJSONString(params.get("user"));
-        User user = JSON.parseObject(userJson,User.class);
+        User user = JSON.parseObject(userJson, User.class);
         String code = (String) params.get("code");
         return userService.register(user, code);
     }

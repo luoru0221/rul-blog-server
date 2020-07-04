@@ -14,6 +14,12 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * 图片上传服务接口层
+ *
+ * @author RuL
+ * @time 2020-06-27
+ */
 @CrossOrigin
 @RestController
 public class FileUploadController {
@@ -21,8 +27,15 @@ public class FileUploadController {
     @Value("${upload.path}")
     private String baseFolderPath;
 
+    /**
+     * 上传图片
+     *
+     * @param image   图片文件
+     * @param request 请求
+     * @return 上传成功的url,或成功与否提示信息
+     */
     @PostMapping("/upload")
-    public Object upload(MultipartFile image,HttpServletRequest request) {
+    public Object upload(MultipartFile image, HttpServletRequest request) {
         JSONObject response = new JSONObject();
 
         //时间日期格式化作为子文件夹路径，即每日上传的文件保存在一个小文件夹里面

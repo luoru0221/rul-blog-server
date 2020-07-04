@@ -1,5 +1,7 @@
 package com.rul.blog.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -7,6 +9,8 @@ import java.io.*;
 
 @Component
 public class FileIOUtil {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(FileIOUtil.class);
 
     @Value("${backup.path}")
     private String backupPath;
@@ -34,6 +38,8 @@ public class FileIOUtil {
 
         bufferedWriter.flush();
         bufferedWriter.close();
+
+        LOGGER.info("write the file-{} successful",backupFile.getPath());
     }
 
     /**
@@ -62,6 +68,7 @@ public class FileIOUtil {
         }
 
         bufferedReader.close();
+        LOGGER.info("read the file-{} successful",backupFile.getPath());
         return fileContent.toString();
     }
 
@@ -81,5 +88,6 @@ public class FileIOUtil {
         //备份文件
         File backupFile = new File(backupFolder, articleId + "");
         backupFile.delete();
+        LOGGER.info("delete the file-{}",backupFile.getPath());
     }
 }

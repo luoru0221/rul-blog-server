@@ -11,6 +11,7 @@ spring:
       min-idle: 8 #最小空闲连接数
       max-active: 12 #最大活跃连接数
 
+
   #redis配置
   redis:
     host: 47.106.252.131
@@ -33,3 +34,7 @@ mybatis:
 mail:
   from:
     addr: luoru0221@qq.com
+
+#日志配置
+logging:
+  config: classpath:logconfig.xml

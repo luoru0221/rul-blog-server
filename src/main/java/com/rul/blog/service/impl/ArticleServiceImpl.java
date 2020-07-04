@@ -8,6 +8,8 @@ import com.rul.blog.pojo.Tag;
 import com.rul.blog.service.ArticleService;
 import com.rul.blog.util.FileIOUtil;
 import com.rul.blog.util.RedisUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +17,16 @@ import java.io.IOException;
 import java.util.List;
 
 
+/**
+ * 文章业务层实现类
+ *
+ * @author RuL
+ * @time 2020-07-01
+ */
 @Service("articleService")
 public class ArticleServiceImpl implements ArticleService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ArticleServiceImpl.class);
 
     @Autowired
     private ArticleMapper articleMapper;
@@ -53,6 +63,8 @@ public class ArticleServiceImpl implements ArticleService {
         Article article = articleMapper.findArticleById(articleId);
         //将数据写入缓存并设置有效时间为1h
         redisUtil.set("article:" + articleId, article, 3600);
+
+        LOGGER.info("get article by article ID successful");
         return article;
     }
 
@@ -63,6 +75,8 @@ public class ArticleServiceImpl implements ArticleService {
         //添加将新标签到数据库
         addNewTags(article);
         //返回新文章
+
+        LOGGER.info("add new article successful");
         return getArticleById(article.getArticleId());
     }
 
@@ -91,7 +105,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public boolean deleteArticle(Integer articleId) {
         //将要删除的文章和作者
-        Article article = articleMapper.findArticleById(articleId);
+        Article article = getArticleById(articleId);
         Integer userId = articleMapper.findAuthorIdByArticleId(articleId);
 
         int rows = 0;
@@ -122,12 +136,12 @@ public class ArticleServiceImpl implements ArticleService {
         }
 
         //删除备份
-        deleteBackup(userId,articleId);
+        deleteBackup(userId, articleId);
         return addNewArticle(article);
     }
 
     @Override
-    public void deleteBackup(Integer userId, Integer articleId){
+    public void deleteBackup(Integer userId, Integer articleId) {
         backupMapper.delBackup(articleId);
         fileIOUtil.delete(userId, articleId);
     }

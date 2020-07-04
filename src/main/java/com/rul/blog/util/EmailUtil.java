@@ -1,5 +1,7 @@
 package com.rul.blog.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -10,6 +12,8 @@ import java.util.Random;
 
 @Component
 public class EmailUtil {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(EmailUtil.class);
 
     @Autowired
     private JavaMailSender javaMailSender;
@@ -30,9 +34,11 @@ public class EmailUtil {
 
             //使用JavaMailSender发送邮件
             javaMailSender.send(message);
+            LOGGER.info("send email to {} successful",to);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
+            LOGGER.error("fail to send email to {}",to);
             return false;
         }
     }
